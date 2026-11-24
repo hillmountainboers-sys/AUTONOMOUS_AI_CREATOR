@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  autonomous-ai-creator:
+    build: .
+    container_name: autonomous_ai_creator
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - LOG_LEVEL=INFO
+      - DATABASE_URL=sqlite:///./app.db
+      - PUBLISH_INTERVAL_SECONDS=7200
+      - LLM_PROVIDER=mock
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

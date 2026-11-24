@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: autonomous-ai-creator
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PUBLISH_INTERVAL_SECONDS
+        value: "7200"
+      - key: LLM_PROVIDER
+        value: mock
